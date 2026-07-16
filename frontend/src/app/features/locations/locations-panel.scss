@@ -1,0 +1,99 @@
+:host {
+  display: block;
+}
+
+h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.hint {
+  margin: 0 0 0.75rem;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.chips {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  overflow: hidden;
+
+  &.disabled {
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+
+    .chip-name {
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+  }
+}
+
+.chip-name {
+  border: none;
+  background: none;
+  padding: 0.3rem 0.2rem 0.3rem 0.7rem;
+  font-size: 0.85rem;
+  color: #3730a3;
+  cursor: pointer;
+}
+
+.chip-remove {
+  border: none;
+  background: none;
+  padding: 0.3rem 0.55rem 0.3rem 0.3rem;
+  color: #9ca3af;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: #dc2626;
+  }
+}
+
+.add-form {
+  display: flex;
+  gap: 0.4rem;
+
+  input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  button {
+    padding: 0.45rem 0.9rem;
+    border: none;
+    border-radius: 6px;
+    background: #4f46e5;
+    color: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    &:hover {
+      background: #4338ca;
+    }
+  }
+}
+
+.error {
+  margin: 0.5rem 0 0;
+  color: #dc2626;
+  font-size: 0.8rem;
+}

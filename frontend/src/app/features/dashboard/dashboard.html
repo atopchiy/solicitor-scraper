@@ -1,0 +1,191 @@
+<div class="toolbar">
+  <button class="run-btn" (click)="runSearch()" [disabled]="scraping()">
+    {{ scraping() ? 'Scraping…' : 'Run search' }}
+  </button>
+
+  @if (runs().length > 0) {
+    <label class="run-picker">
+      Run:
+      <select [value]="selectedRunId()" (change)="onRunPicked($any($event.target).value)">
+        @for (run of runs(); track run.id) {
+          <option [value]="run.id">
+            #{{ run.id }} — {{ run.startedAt | date:'d MMM y, HH:mm' }} ({{ run.resultCount }} results)
+          </option>
+        }
+      </select>
+    </label>
+  }
+
+  @if (scraping()) {
+    <span class="progress">Fetching results for every enabled location, this takes a few seconds…</span>
+  }
+</div>
+
+@if (error(); as message) {
+  <p class="error">{{ message }}</p>
+}
+
+@if (report(); as rep) {
+  @if (rep.failedLocations.length > 0) {
+    <p class="warning">No results could be fetched for: {{ rep.failedLocations.join(', ') }}</p>
+  }
+
+  <section class="cards">
+    <div class="card">
+      <span class="card-value">{{ rep.totalSolicitors }}</span>
+      <span class="card-label">Solicitors found</span>
+    </div>
+    <div class="card">
+      <span class="card-value">{{ rep.locationsCovered }}</span>
+      <span class="card-label">Locations covered</span>
+    </div>
+    <div class="card">
+      <span class="card-value">{{ rep.averageRating ?? '—' }}</span>
+      <span class="card-label">Average rating</span>
+    </div>
+    <div class="card">
+      <span class="card-value">{{ rep.withQualityMarks }}</span>
+      <span class="card-label">With quality marks</span>
+    </div>
+    <div class="card" [class.highlight]="hasPreviousRun() && rep.newSinceLastRun.length > 0">
+      <span class="card-value">{{ hasPreviousRun() ? rep.newSinceLastRun.length : '—' }}</span>
+      <span class="card-label">New since last run</span>
+    </div>
+  </section>
+
+  <section class="panels">
+    <div class="panel">
+      <h3>Results by location</h3>
+      <table class="location-table">
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th></th>
+            <th class="num">Firms</th>
+            <th class="num">Avg ★</th>
+            <th class="num">Featured</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (loc of rep.locations; track loc.location) {
+            <tr>
+              <td>{{ loc.location }}</td>
+              <td class="bar-cell"><div class="bar" [style.width]="barWidth(loc.count)"></div></td>
+              <td class="num">{{ loc.count }}</td>
+              <td class="num">{{ loc.averageRating ?? '—' }}</td>
+              <td class="num">{{ loc.featuredCount }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h3>Top rated nationally</h3>
+      <p class="panel-hint">Rating weighted by review volume across all scraped locations.</p>
+      <ol class="top-list">
+        @for (firm of rep.topRated; track firm.name) {
+          <li>
+            <span class="firm-name">{{ firm.name }}</span>
+            <span class="firm-meta">
+              {{ firm.rating | number:'1.1-1' }} ★ · {{ firm.reviewCount }} reviews
+              @if (firm.locationCount > 1) {
+                · {{ firm.locationCount }} locations
+              }
+            </span>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  @if (hasPreviousRun() && rep.newSinceLastRun.length > 0) {
+    <section class="panel new-panel">
+      <h3>New solicitors since the previous run</h3>
+      <ul class="new-list">
+        @for (item of rep.newSinceLastRun; track item.location + item.name) {
+          <li><span class="badge">NEW</span> {{ item.name }} — {{ item.location }}</li>
+        }
+      </ul>
+    </section>
+  }
+
+  <section class="panel results-panel">
+    <div class="results-header">
+      <h3>All results</h3>
+      <div class="filters">
+        <select [(ngModel)]="locationFilter" (ngModelChange)="refreshFilters()">
+          <option value="all">All locations</option>
+          @for (location of resultLocations(); track location) {
+            <option [value]="location">{{ location }}</option>
+          }
+        </select>
+        <input
+          type="text"
+          placeholder="Filter by name or address"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="refreshFilters()" />
+        <span class="count">{{ filteredResults().length }} shown</span>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="setSort('name')">Name {{ sortIndicator('name') }}</th>
+            <th class="sortable" (click)="setSort('location')">Location {{ sortIndicator('location') }}</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th class="sortable num" (click)="setSort('rating')">Rating {{ sortIndicator('rating') }}</th>
+            <th class="sortable num" (click)="setSort('reviewCount')">Reviews {{ sortIndicator('reviewCount') }}</th>
+            <th>Links</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (result of filteredResults(); track result.id) {
+            <tr>
+              <td>
+                <span class="name">{{ result.name }}</span>
+                @if (isNew(result)) {
+                  <span class="badge">NEW</span>
+                }
+                @if (result.qualityMarks) {
+                  <span class="quality" [title]="result.qualityMarks">✓</span>
+                }
+              </td>
+              <td>{{ result.location }}</td>
+              <td class="nowrap">{{ result.phone ?? '—' }}</td>
+              <td class="address">{{ result.address ?? '—' }}</td>
+              <td class="num nowrap">
+                @if (result.rating !== null) {
+                  <span class="stars" [title]="result.rating">{{ stars(result.rating) }}</span>
+                } @else {
+                  —
+                }
+              </td>
+              <td class="num">{{ result.reviewCount ?? '—' }}</td>
+              <td class="nowrap">
+                @if (result.website) {
+                  <a [href]="result.website" target="_blank" rel="noopener">site</a>
+                }
+                @if (result.profileUrl) {
+                  <a [href]="result.profileUrl" target="_blank" rel="noopener">profile</a>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+} @else if (!loading() && !scraping()) {
+  <div class="empty">
+    <p>No search runs yet.</p>
+    <p>Adjust the locations list and hit <strong>Run search</strong> to pull the latest conveyancing solicitors from solicitors.com.</p>
+  </div>
+}
+
+@if (loading()) {
+  <p class="progress">Loading run…</p>
+}

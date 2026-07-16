@@ -1,0 +1,22 @@
+<h2>Locations</h2>
+<p class="hint">Disabled locations are skipped when a search runs. Click a location to toggle it.</p>
+
+<ul class="chips">
+  @for (location of locations(); track location.id) {
+    <li class="chip" [class.disabled]="!location.isEnabled">
+      <button type="button" class="chip-name" (click)="toggle(location)" [title]="location.isEnabled ? 'Click to disable' : 'Click to enable'">
+        {{ location.name }}
+      </button>
+      <button type="button" class="chip-remove" (click)="remove(location)" title="Remove">&times;</button>
+    </li>
+  }
+</ul>
+
+<form class="add-form" (ngSubmit)="add()">
+  <input type="text" name="name" [(ngModel)]="newName" placeholder="Add a town or city" />
+  <button type="submit">Add</button>
+</form>
+
+@if (error(); as message) {
+  <p class="error">{{ message }}</p>
+}

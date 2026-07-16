@@ -1,0 +1,316 @@
+:host {
+  display: block;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.run-btn {
+  padding: 0.55rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #4338ca;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.run-picker {
+  font-size: 0.85rem;
+  color: #4b5563;
+
+  select {
+    margin-left: 0.35rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+}
+
+.progress {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.warning {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.85rem;
+  color: #92400e;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+
+  &.highlight {
+    border-color: #4f46e5;
+    background: #eef2ff;
+  }
+}
+
+.card-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.card-label {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+
+  h3 {
+    margin: 0 0 0.6rem;
+    font-size: 0.95rem;
+  }
+}
+
+.panel-hint {
+  margin: -0.35rem 0 0.6rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+
+  th {
+    text-align: left;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  td {
+    padding: 0.45rem 0.5rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: top;
+  }
+
+  .num {
+    text-align: right;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+}
+
+.location-table {
+  .bar-cell {
+    width: 35%;
+  }
+
+  .bar {
+    height: 0.7rem;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+    min-width: 2px;
+  }
+}
+
+.top-list {
+  margin: 0;
+  padding-left: 1.3rem;
+
+  li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #f3f4f6;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .firm-name {
+    font-weight: 600;
+    display: block;
+  }
+
+  .firm-meta {
+    font-size: 0.78rem;
+    color: #6b7280;
+  }
+}
+
+.new-panel {
+  margin-bottom: 1.25rem;
+}
+
+.new-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2;
+  font-size: 0.85rem;
+
+  li {
+    padding: 0.2rem 0;
+  }
+
+  @media (max-width: 900px) {
+    columns: 1;
+  }
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  select,
+  input {
+    padding: 0.4rem 0.55rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.82rem;
+  }
+
+  input {
+    width: 220px;
+  }
+
+  .count {
+    font-size: 0.78rem;
+    color: #9ca3af;
+  }
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.results-table {
+  .sortable {
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color: #4f46e5;
+    }
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .address {
+    color: #4b5563;
+  }
+
+  .stars {
+    color: #f59e0b;
+    letter-spacing: 0.05em;
+  }
+
+  .quality {
+    color: #16a34a;
+    margin-left: 0.3rem;
+    cursor: help;
+  }
+
+  a {
+    color: #4f46e5;
+    margin-right: 0.5rem;
+  }
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 0.65rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.new-list .badge {
+  margin: 0 0.4rem 0 0;
+}
+
+.empty {
+  background: #fff;
+  border: 1px dashed #d1d5db;
+  border-radius: 10px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: #6b7280;
+
+  p {
+    margin: 0.25rem 0;
+  }
+}
