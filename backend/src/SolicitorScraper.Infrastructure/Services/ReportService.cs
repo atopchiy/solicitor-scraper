@@ -86,6 +86,7 @@ public class ReportService : IReportService
         return current.Results
             .Where(r => !known.Contains((r.Location, r.Name)))
             .Select(r => new NewSolicitor(r.Name, r.Location))
+            .Distinct()
             .OrderBy(n => n.Location).ThenBy(n => n.Name)
             .ToList();
     }

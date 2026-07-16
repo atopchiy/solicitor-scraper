@@ -33,6 +33,18 @@ public class ReportServiceTests
     }
 
     [Fact]
+    public async Task A_firm_listed_twice_in_the_same_location_is_reported_once()
+    {
+        // The site sometimes lists the same firm under several branch addresses.
+        var runs = new FakeRepository(Run(1, "Firm A"), Run(2, "Firm A", "Firm B", "Firm B"));
+
+        var report = await new ReportService(runs).BuildReportAsync(2);
+
+        var newFirm = Assert.Single(report!.NewSolicitors);
+        Assert.Equal("Firm B", newFirm.Name);
+    }
+
+    [Fact]
     public async Task Same_name_in_a_different_location_counts_as_new()
     {
         var run2 = Run(2, "Firm A");
