@@ -1,10 +1,10 @@
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using SolicitorScraper.Domain.Entities;
 using SolicitorScraper.Domain.Repositories;
 using SolicitorScraper.Domain.Scraping;
-using SolicitorScraper.Domain.Services;
 
-namespace SolicitorScraper.Infrastructure.Services;
+namespace SolicitorScraper.Application.Searches;
 
 public class ScrapeService : IScrapeService
 {
@@ -34,7 +34,7 @@ public class ScrapeService : IScrapeService
     {
         var enabled = (await _locations.GetAllAsync(ct)).Where(l => l.IsEnabled).ToList();
         if (enabled.Count == 0)
-            throw new InvalidOperationException("No locations are enabled for scraping.");
+            throw new ValidationException("No locations are enabled for scraping.");
 
         var run = new SearchRun { StartedAt = DateTime.UtcNow };
 

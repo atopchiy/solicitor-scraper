@@ -1,8 +1,9 @@
+using FluentValidation;
 using Microsoft.Extensions.Logging.Abstractions;
+using SolicitorScraper.Application.Searches;
 using SolicitorScraper.Domain.Entities;
 using SolicitorScraper.Domain.Repositories;
 using SolicitorScraper.Domain.Scraping;
-using SolicitorScraper.Infrastructure.Services;
 
 namespace SolicitorScraper.Tests;
 
@@ -61,7 +62,7 @@ public class ScrapeServiceTests
     {
         var service = CreateService(locations: [], fetch: _ => "");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => service.RunAsync());
+        await Assert.ThrowsAsync<ValidationException>(() => service.RunAsync());
     }
 
     private static ScrapeService CreateService(List<Location> locations, Func<string, string> fetch) =>

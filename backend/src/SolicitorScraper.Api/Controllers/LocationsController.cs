@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SolicitorScraper.Domain.Repositories;
+using SolicitorScraper.Application.Locations;
 
 namespace SolicitorScraper.Api.Controllers;
 
@@ -7,9 +7,9 @@ namespace SolicitorScraper.Api.Controllers;
 [Route("api/locations")]
 public class LocationsController : ControllerBase
 {
-    private readonly ILocationRepository _locations;
+    private readonly ILocationService _locations;
 
-    public LocationsController(ILocationRepository locations)
+    public LocationsController(ILocationService locations)
     {
         _locations = locations;
     }
@@ -21,29 +21,18 @@ public class LocationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] AddLocationRequest request, CancellationToken ct)
     {
-        var name = request.Name?.Trim();
-        if (string.IsNullOrEmpty(name))
-            return BadRequest(new { error = "Location name is required." });
-
-        if (await _locations.GetByNameAsync(name, ct) is not null)
-            return Conflict(new { error = $"Location '{name}' already exists." });
-
-        var location = await _locations.AddAsync(name, ct);
+        var location = await _locations.AddAsync(request, ct);
         return CreatedAtAction(nameof(GetAll), new { location.Id }, location);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id, CancellationToken ct) =>
-        await _locations.DeleteAsync(id, ct) ? NoContent() : NotFound();
-
-    [HttpPatch("{id:int}")]
-    public async Task<IActionResult> SetEnabled(int id, [FromBody] SetEnabledRequest request, CancellationToken ct)
+    public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
-        var location = await _locations.SetEnabledAsync(id, request.IsEnabled, ct);
-        return location is null ? NotFound() : Ok(location);
+        await _locations.DeleteAsync(id, ct);
+        return NoContent();
     }
 
-    public record AddLocationRequest(string? Name);
-
-    public record SetEnabledRequest(bool IsEnabled);
+    [HttpPatch("{id:int}")]
+    public async Task<IActionResult> SetEnabled(int id, [FromBody] SetLocationEnabledRequest request, CancellationToken ct) =>
+        Ok(await _locations.SetEnabledAsync(id, request, ct));
 }

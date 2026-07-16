@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SolicitorScraper.Domain.Entities;
-using SolicitorScraper.Domain.Repositories;
-using SolicitorScraper.Domain.Services;
+using SolicitorScraper.Application.Searches;
 
 namespace SolicitorScraper.Api.Controllers;
 
@@ -9,49 +7,26 @@ namespace SolicitorScraper.Api.Controllers;
 [Route("api/searches")]
 public class SearchesController : ControllerBase
 {
-    private readonly IScrapeService _scraper;
-    private readonly IReportService _reports;
-    private readonly ISearchRunRepository _runs;
+    private readonly ISearchService _searches;
 
-    public SearchesController(IScrapeService scraper, IReportService reports, ISearchRunRepository runs)
+    public SearchesController(ISearchService searches)
     {
-        _scraper = scraper;
-        _reports = reports;
-        _runs = runs;
+        _searches = searches;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Run(CancellationToken ct)
-    {
-        SearchRun run;
-        try
-        {
-            run = await _scraper.RunAsync(ct);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-
-        return Ok(new SearchRunSummary(
-            run.Id, run.StartedAt, run.CompletedAt, run.Results.Count, run.FailedLocations));
-    }
+    public async Task<IActionResult> Run(CancellationToken ct) =>
+        Ok(await _searches.RunAsync(ct));
 
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken ct) =>
-        Ok(await _runs.GetSummariesAsync(ct));
+        Ok(await _searches.GetRunsAsync(ct));
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id, CancellationToken ct)
-    {
-        var run = await _runs.GetByIdAsync(id, ct);
-        return run is null ? NotFound() : Ok(run);
-    }
+    public async Task<IActionResult> GetById(int id, CancellationToken ct) =>
+        Ok(await _searches.GetRunAsync(id, ct));
 
     [HttpGet("{id:int}/report")]
-    public async Task<IActionResult> GetReport(int id, CancellationToken ct)
-    {
-        var report = await _reports.BuildReportAsync(id, ct);
-        return report is null ? NotFound() : Ok(report);
-    }
+    public async Task<IActionResult> GetReport(int id, CancellationToken ct) =>
+        Ok(await _searches.GetReportAsync(id, ct));
 }

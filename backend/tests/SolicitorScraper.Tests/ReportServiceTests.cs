@@ -1,6 +1,6 @@
+using SolicitorScraper.Application.Searches;
 using SolicitorScraper.Domain.Entities;
 using SolicitorScraper.Domain.Repositories;
-using SolicitorScraper.Infrastructure.Services;
 
 namespace SolicitorScraper.Tests;
 

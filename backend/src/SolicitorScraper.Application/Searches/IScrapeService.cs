@@ -1,6 +1,6 @@
 using SolicitorScraper.Domain.Entities;
 
-namespace SolicitorScraper.Domain.Services;
+namespace SolicitorScraper.Application.Searches;
 
 public interface IScrapeService
 {

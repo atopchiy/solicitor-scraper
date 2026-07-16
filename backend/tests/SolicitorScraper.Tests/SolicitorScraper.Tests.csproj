@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SolicitorScraper.Infrastructure\SolicitorScraper.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\SolicitorScraper.Application\SolicitorScraper.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

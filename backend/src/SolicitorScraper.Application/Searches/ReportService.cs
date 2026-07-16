@@ -1,9 +1,7 @@
 using SolicitorScraper.Domain.Entities;
-using SolicitorScraper.Domain.Reports;
 using SolicitorScraper.Domain.Repositories;
-using SolicitorScraper.Domain.Services;
 
-namespace SolicitorScraper.Infrastructure.Services;
+namespace SolicitorScraper.Application.Searches;
 
 public class ReportService : IReportService
 {

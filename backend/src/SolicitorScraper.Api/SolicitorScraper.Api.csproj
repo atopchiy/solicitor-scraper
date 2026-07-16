@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SolicitorScraper.Infrastructure\SolicitorScraper.Infrastructure.csproj" />
+    <ProjectReference Include="..\SolicitorScraper.Application\SolicitorScraper.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

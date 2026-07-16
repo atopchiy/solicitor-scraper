@@ -1,4 +1,4 @@
-namespace SolicitorScraper.Domain.Reports;
+namespace SolicitorScraper.Application.Searches;
 
 public record RunReport(
     int RunId,

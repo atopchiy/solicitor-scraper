@@ -1,6 +1,4 @@
-using SolicitorScraper.Domain.Reports;
-
-namespace SolicitorScraper.Domain.Services;
+namespace SolicitorScraper.Application.Searches;
 
 public interface IReportService
 {

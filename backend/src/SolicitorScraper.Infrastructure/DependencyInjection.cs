@@ -3,10 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SolicitorScraper.Domain.Repositories;
 using SolicitorScraper.Domain.Scraping;
-using SolicitorScraper.Domain.Services;
 using SolicitorScraper.Infrastructure.Persistence;
 using SolicitorScraper.Infrastructure.Scraping;
-using SolicitorScraper.Infrastructure.Services;
 
 namespace SolicitorScraper.Infrastructure;
 
@@ -19,8 +17,6 @@ public static class DependencyInjection
 
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<ISearchRunRepository, SearchRunRepository>();
-        services.AddScoped<IScrapeService, ScrapeService>();
-        services.AddScoped<IReportService, ReportService>();
         services.AddSingleton<IResultsPageParser, SolicitorsComParser>();
 
         services.AddHttpClient<IResultsPageClient, SolicitorsComClient>(client =>

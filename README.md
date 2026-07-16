@@ -93,12 +93,18 @@ failures).
 
 ```
 backend/
-  src/SolicitorScraper.Domain          entities, repository/service interfaces, report models
-  src/SolicitorScraper.Infrastructure  scraper client + hand-rolled parser, EF Core, services
-  src/SolicitorScraper.Api             controllers, DI, CORS
+  src/SolicitorScraper.Domain          entities, repository + scraping abstractions
+  src/SolicitorScraper.Application     business logic: services, report building, FluentValidation
+  src/SolicitorScraper.Infrastructure  scraper client + hand-rolled parser, EF Core repositories
+  src/SolicitorScraper.Api             thin controllers, exception-mapping middleware, DI, CORS
   tests/SolicitorScraper.Tests         xUnit
 frontend/                              Angular 20, standalone components, plain SCSS
 ```
+
+Controllers only talk to Application services. Input validation uses FluentValidation
+(`AddLocationRequestValidator`), and business errors surface as typed exceptions
+(`ValidationException`, `NotFoundException`, `ConflictException`) that a small middleware
+maps to 400/404/409 responses, so controllers contain no error-handling plumbing.
 
 The scraping detail worth mentioning: the site's search form just 302-redirects to a static
 page per location (`conveyancing+london.html`), so the client does a plain GET instead of

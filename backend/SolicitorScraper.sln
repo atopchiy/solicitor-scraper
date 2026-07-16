@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0A9039D3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolicitorScraper.Tests", "tests\SolicitorScraper.Tests\SolicitorScraper.Tests.csproj", "{5652290C-3742-4359-AFA6-1C863D3C2A3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolicitorScraper.Application", "src\SolicitorScraper.Application\SolicitorScraper.Application.csproj", "{0E8BC493-8663-483C-A7F8-B921A7EA28CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,11 +42,16 @@ Global
 		{5652290C-3742-4359-AFA6-1C863D3C2A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5652290C-3742-4359-AFA6-1C863D3C2A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5652290C-3742-4359-AFA6-1C863D3C2A3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8BC493-8663-483C-A7F8-B921A7EA28CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8BC493-8663-483C-A7F8-B921A7EA28CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8BC493-8663-483C-A7F8-B921A7EA28CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8BC493-8663-483C-A7F8-B921A7EA28CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3A2351B2-988D-4FA5-99A6-9E44A6382D64} = {F2002D7E-0C88-4A7A-8C8C-697C5BA9B694}
 		{10B485F3-3D30-4739-AEDC-5736E98A183E} = {F2002D7E-0C88-4A7A-8C8C-697C5BA9B694}
 		{5DE261C0-FFB1-4881-92BF-5C0D749CF0ED} = {F2002D7E-0C88-4A7A-8C8C-697C5BA9B694}
 		{5652290C-3742-4359-AFA6-1C863D3C2A3C} = {0A9039D3-792E-4769-BE6C-2A2607C7FF08}
+		{0E8BC493-8663-483C-A7F8-B921A7EA28CE} = {F2002D7E-0C88-4A7A-8C8C-697C5BA9B694}
 	EndGlobalSection
 EndGlobal
