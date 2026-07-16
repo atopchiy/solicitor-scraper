@@ -115,10 +115,3 @@ than regex or a DOM library, per the brief.
 | GET | `/api/searches` | run history |
 | GET | `/api/searches/{id}` | full results of a run |
 | GET | `/api/searches/{id}/report` | aggregated report for a run |
-
-## With more time
-
-- Schedule runs (hosted service) instead of manual triggering, and notify on new solicitors.
-- Scrape the firms' profile pages for extra details (email, staff, areas of law).
-- A second listing site behind the same `IResultsPageClient`/`IResultsPageParser` pair.
-- Pagination/virtual scroll on the results table; export to CSV.
