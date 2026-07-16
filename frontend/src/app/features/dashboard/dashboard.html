@@ -126,7 +126,7 @@
           placeholder="Filter by name or address"
           [(ngModel)]="searchTerm"
           (ngModelChange)="refreshFilters()" />
-        <span class="count">{{ filteredResults().length }} shown</span>
+        <span class="count">{{ filteredResults().length }} matching</span>
       </div>
     </div>
 
@@ -144,7 +144,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (result of filteredResults(); track result.id) {
+          @for (result of pagedResults(); track result.id) {
             <tr>
               <td>
                 <span class="name">{{ result.name }}</span>
@@ -178,6 +178,23 @@
           }
         </tbody>
       </table>
+    </div>
+
+    <div class="pager">
+      <span class="range">{{ rangeLabel() }}</span>
+      <div class="pager-controls">
+        <label>
+          Per page:
+          <select [value]="pageSize()" (change)="setPageSize($any($event.target).value)">
+            @for (size of pageSizes; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
+          </select>
+        </label>
+        <button type="button" (click)="goToPage(-1)" [disabled]="page() === 1">‹ Prev</button>
+        <span class="page-num">{{ page() }} / {{ totalPages() }}</span>
+        <button type="button" (click)="goToPage(1)" [disabled]="page() === totalPages()">Next ›</button>
+      </div>
     </div>
   </section>
 } @else if (!loading() && !scraping()) {

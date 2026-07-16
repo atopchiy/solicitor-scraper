@@ -30,6 +30,10 @@ export class Dashboard implements OnInit {
   private sortColumn = signal<SortColumn>('rating');
   private sortAsc = signal(false);
 
+  readonly pageSizes = [25, 50, 100];
+  page = signal(1);
+  pageSize = signal(25);
+
   resultLocations = computed(() =>
     [...new Set(this.results().map(r => r.location))].sort());
 
@@ -59,6 +63,22 @@ export class Dashboard implements OnInit {
       .sort((a, b) => direction * this.compare(a, b, column));
   });
 
+  pagedResults = computed(() => {
+    const start = (this.page() - 1) * this.pageSize();
+    return this.filteredResults().slice(start, start + this.pageSize());
+  });
+
+  totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredResults().length / this.pageSize())));
+
+  rangeLabel = computed(() => {
+    const total = this.filteredResults().length;
+    if (total === 0) return 'No results';
+    const start = (this.page() - 1) * this.pageSize() + 1;
+    const end = Math.min(this.page() * this.pageSize(), total);
+    return `${start}–${end} of ${total}`;
+  });
+
   ngOnInit(): void {
     this.loadRuns(true);
   }
@@ -81,6 +101,7 @@ export class Dashboard implements OnInit {
 
   selectRun(id: number): void {
     this.selectedRunId.set(id);
+    this.page.set(1);
     this.loading.set(true);
     forkJoin({
       run: this.api.getRun(id),
@@ -104,6 +125,7 @@ export class Dashboard implements OnInit {
 
   refreshFilters(): void {
     this.filterVersion.update(v => v + 1);
+    this.page.set(1);
   }
 
   setSort(column: SortColumn): void {
@@ -113,6 +135,16 @@ export class Dashboard implements OnInit {
       this.sortColumn.set(column);
       this.sortAsc.set(column === 'name' || column === 'location');
     }
+    this.page.set(1);
+  }
+
+  goToPage(delta: number): void {
+    this.page.update(p => Math.min(Math.max(1, p + delta), this.totalPages()));
+  }
+
+  setPageSize(value: string): void {
+    this.pageSize.set(Number(value));
+    this.page.set(1);
   }
 
   sortIndicator(column: SortColumn): string {
