@@ -66,6 +66,6 @@ export interface RunReport {
   featuredCount: number;
   locations: LocationSummary[];
   topRated: RankedFirm[];
-  newSinceLastRun: NewSolicitor[];
+  newSolicitors: NewSolicitor[];
   failedLocations: string[];
 }

@@ -14,5 +14,5 @@ public interface ISearchRunRepository
     Task<SearchRun> AddAsync(SearchRun run, CancellationToken ct = default);
     Task<List<SearchRunSummary>> GetSummariesAsync(CancellationToken ct = default);
     Task<SearchRun?> GetByIdAsync(int id, CancellationToken ct = default);
-    Task<SearchRun?> GetPreviousRunAsync(int beforeId, CancellationToken ct = default);
+    Task<HashSet<(string Location, string Name)>> GetKnownSolicitorsAsync(int beforeRunId, CancellationToken ct = default);
 }

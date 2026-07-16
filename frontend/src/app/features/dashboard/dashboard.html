@@ -47,9 +47,9 @@
       <span class="card-value">{{ rep.withQualityMarks }}</span>
       <span class="card-label">With quality marks</span>
     </div>
-    <div class="card" [class.highlight]="hasPreviousRun() && rep.newSinceLastRun.length > 0">
-      <span class="card-value">{{ hasPreviousRun() ? rep.newSinceLastRun.length : '—' }}</span>
-      <span class="card-label">New since last run</span>
+    <div class="card" [class.highlight]="hasPreviousRun() && rep.newSolicitors.length > 0">
+      <span class="card-value">{{ hasPreviousRun() ? rep.newSolicitors.length : '—' }}</span>
+      <span class="card-label">New firms</span>
     </div>
   </section>
 
@@ -99,11 +99,12 @@
     </div>
   </section>
 
-  @if (hasPreviousRun() && rep.newSinceLastRun.length > 0) {
+  @if (hasPreviousRun() && rep.newSolicitors.length > 0) {
     <section class="panel new-panel">
-      <h3>New solicitors since the previous run</h3>
+      <h3>New solicitors</h3>
+      <p class="panel-hint">Firms not seen in any previous run.</p>
       <ul class="new-list">
-        @for (item of rep.newSinceLastRun; track item.location + item.name) {
+        @for (item of rep.newSolicitors; track item.location + item.name) {
           <li><span class="badge">NEW</span> {{ item.name }} — {{ item.location }}</li>
         }
       </ul>

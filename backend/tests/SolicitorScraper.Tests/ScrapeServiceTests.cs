@@ -110,7 +110,7 @@ public class ScrapeServiceTests
         public Task<SearchRun?> GetByIdAsync(int id, CancellationToken ct = default) =>
             Task.FromResult<SearchRun?>(null);
 
-        public Task<SearchRun?> GetPreviousRunAsync(int beforeId, CancellationToken ct = default) =>
-            Task.FromResult<SearchRun?>(null);
+        public Task<HashSet<(string Location, string Name)>> GetKnownSolicitorsAsync(int beforeRunId, CancellationToken ct = default) =>
+            Task.FromResult(new HashSet<(string, string)>());
     }
 }

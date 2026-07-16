@@ -34,7 +34,7 @@ export class Dashboard implements OnInit {
     [...new Set(this.results().map(r => r.location))].sort());
 
   private newKeys = computed(() =>
-    new Set((this.report()?.newSinceLastRun ?? []).map(n => `${n.location}|${n.name}`)));
+    new Set((this.report()?.newSolicitors ?? []).map(n => `${n.location}|${n.name}`)));
 
   hasPreviousRun = computed(() => {
     const id = this.selectedRunId();

@@ -30,9 +30,14 @@ public class SearchRunRepository : ISearchRunRepository
     public Task<SearchRun?> GetByIdAsync(int id, CancellationToken ct = default) =>
         _db.SearchRuns.Include(r => r.Results).FirstOrDefaultAsync(r => r.Id == id, ct);
 
-    public Task<SearchRun?> GetPreviousRunAsync(int beforeId, CancellationToken ct = default) =>
-        _db.SearchRuns.Include(r => r.Results)
-            .Where(r => r.Id < beforeId)
-            .OrderByDescending(r => r.Id)
-            .FirstOrDefaultAsync(ct);
+    public async Task<HashSet<(string Location, string Name)>> GetKnownSolicitorsAsync(int beforeRunId, CancellationToken ct = default)
+    {
+        var pairs = await _db.SolicitorResults
+            .Where(s => s.SearchRunId < beforeRunId)
+            .Select(s => new { s.Location, s.Name })
+            .Distinct()
+            .ToListAsync(ct);
+
+        return pairs.Select(p => (p.Location, p.Name)).ToHashSet();
+    }
 }

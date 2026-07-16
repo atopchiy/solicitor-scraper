@@ -21,7 +21,7 @@ public class ReportService : IReportService
         var run = await _runs.GetByIdAsync(runId, ct);
         if (run is null) return null;
 
-        var previous = await _runs.GetPreviousRunAsync(run.Id, ct);
+        var known = await _runs.GetKnownSolicitorsAsync(run.Id, ct);
 
         return new RunReport(
             run.Id,
@@ -33,7 +33,7 @@ public class ReportService : IReportService
             run.Results.Count(r => r.IsFeatured),
             BuildLocationSummaries(run),
             BuildTopRated(run),
-            FindNewSolicitors(run, previous),
+            FindNewSolicitors(run, known),
             run.FailedLocations);
     }
 
@@ -76,13 +76,12 @@ public class ReportService : IReportService
             .Take(TopRatedLimit)
             .ToList();
 
-    private static List<NewSolicitor> FindNewSolicitors(SearchRun current, SearchRun? previous)
+    // "New" means never seen in ANY earlier run, not just the previous one.
+    // The site rotates its non-featured listings between requests, so a
+    // previous-run-only diff would flag rotated-back-in firms as new.
+    private static List<NewSolicitor> FindNewSolicitors(SearchRun current, HashSet<(string Location, string Name)> known)
     {
-        if (previous is null) return [];
-
-        var known = previous.Results
-            .Select(r => (r.Location, r.Name))
-            .ToHashSet();
+        if (known.Count == 0) return [];
 
         return current.Results
             .Where(r => !known.Contains((r.Location, r.Name)))

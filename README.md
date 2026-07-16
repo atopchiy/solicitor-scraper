@@ -12,8 +12,10 @@ small report. Built as a .NET 8 Web API + Angular SPA.
 - On "Run search" it fetches the results page for every enabled location in parallel and
   parses each listing by hand (no HTML parsing libraries) — name, phone, address, website,
   profile link, star rating, review count, quality marks and description.
-- Every run is stored in Postgres, so there is a run history. The report compares the
-  selected run against the previous one and flags solicitors that appeared since.
+- Every run is stored in Postgres, so there is a run history. The report flags solicitors
+  that haven't been seen in any previous run. (The diff is against the union of all earlier
+  runs rather than just the last one, because the site rotates its non-featured listings
+  between requests — a last-run-only comparison would flag rotated-back-in firms as new.)
 - The report view shows totals per location, average ratings, quality-mark coverage and a
   national top-10 ranked by star rating weighted by review volume.
 

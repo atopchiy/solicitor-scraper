@@ -10,7 +10,7 @@ public record RunReport(
     int FeaturedCount,
     IReadOnlyList<LocationSummary> Locations,
     IReadOnlyList<RankedFirm> TopRated,
-    IReadOnlyList<NewSolicitor> NewSinceLastRun,
+    IReadOnlyList<NewSolicitor> NewSolicitors,
     IReadOnlyList<string> FailedLocations);
 
 public record LocationSummary(
